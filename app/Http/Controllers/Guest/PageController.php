@@ -12,10 +12,25 @@ class PageController extends Controller
     public function index() {
 
         $movies = Movie::all();
+        $moviesThumb = config("db.thumb");
 
-        // dd($movies);
+        $votes = $this->getStars($movies);
 
-        return view('home', compact('movies'));
+        // dd($votes[3]);
+
+        return view('home', compact('movies', 'moviesThumb', 'votes'));
+    }
+
+    private function getStars($movies) {
+        $votes = [];
+        $vote = 0;
+        foreach($movies as $movie) {
+            $vote = intval($movie->vote / 2);
+            array_push($votes, $vote);
+        }
+
+        return $votes;
+         
     }
 
 }
